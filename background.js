@@ -5,7 +5,7 @@ $(function () {
     }
   });
 
-  $('body').prepend(
+  $('h1').after(
     ['<form ',
      'name="search" method="post" onsubmit="return validateForm()">',
      '<input type="text" size="5" name="department">',
