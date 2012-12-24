@@ -1,7 +1,8 @@
 $(function () {
-  $("table").each(function () {
-    if ($(this).attr("bgcolor") === "#99ccff") {
-      $(this).addClass("title");
+  $('table').each(function () {
+    $(this).attr('cellspacing', 0);
+    if ($(this).attr('bgcolor') === '#99ccff') {
+      $(this).addClass('title');
     }
   });
 });
