@@ -17,8 +17,12 @@ $(function () {
 
   addScript(['function validateForm() {',
     'var form = document.search;',
-    'var page = form.department.value + ".html";',
-    'var link = form.department.value + form.number.value;',
+    'var parts = form.class.value.trim().split(" ");',
+    'if (parts.length != 2) return false;',
+    'var department = parts[0];',
+    'var number = parts[1];',
+    'var page = department + ".html";',
+    'var link = department + number;',
     'form.action = page + "#" + link;',
     'return true;',
     '}'
