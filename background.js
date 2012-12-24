@@ -5,11 +5,13 @@ $(function () {
     }
   });
 
+  var defaultText = "Enter a class";
   $('h1').after(
     ['<form ',
      'name="search" method="post" onsubmit="return validateForm()">',
-     '<input type="text" size="5" name="department">',
-     '<input type="text" size="3" maxlength="3" name="number">',
+     '<input type="text" size="11" name="class" value="' + defaultText + '" ',
+     'onfocus="if (this.value==\'' + defaultText + '\') {this.value = \'\';}" ',
+     'onblur="if(this.value==\'\') {this.value = \'' + defaultText + '\';}">',
      '<input type="submit" value="Search">',
      '</form>'
     ].join('\n')
