@@ -16,15 +16,19 @@ $(function () {
     ].join('\n')
   );
 
-  var script = document.createElement('script');
-  script.text = ['function validateForm() {',
+  addScript(['function validateForm() {',
     'var form = document.search;',
-    'console.log(form.department.value);',
     'var page = form.department.value + ".html";',
     'var link = form.department.value + form.number.value;',
     'form.action = page + "#" + link;',
     'return true;',
     '}'
-  ].join('\n');
-  document.body.appendChild(script);
+  ].join('\n'));
 });
+
+function addScript(text) {
+  var script = document.createElement('script');
+  script.text = text;
+  document.body.appendChild(script);
+  document.body.removeChild(document.body.lastChild);
+}
