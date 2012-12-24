@@ -20,7 +20,9 @@ $(function () {
   script.text = ['function validateForm() {',
     'var form = document.search;',
     'console.log(form.department.value);',
-    'form.action = "#" + form.department.value + form.number.value;',
+    'var page = form.department.value + ".html";',
+    'var link = form.department.value + form.number.value;',
+    'form.action = page + "#" + link;',
     'return true;',
     '}'
   ].join('\n');
