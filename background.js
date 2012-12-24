@@ -19,7 +19,7 @@ $(function () {
 
   addScript(['function validateForm() {',
     'var form = document.search;',
-    'var parts = form.class.value.trim().split(" ");',
+    'var parts = form.class.value.trim().toLowerCase().split(" ");',
     'if (parts.length != 2) return false;',
     'var department = parts[0];',
     'var number = parts[1];',
