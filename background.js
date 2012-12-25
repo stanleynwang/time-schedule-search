@@ -1,9 +1,36 @@
 $(function () {
-  $('table').each(function () {
-    if ($(this).attr('bgcolor') === '#99ccff') {
-      $(this).addClass('title');
+  var abbrToLinkMap = {};
+  $('li a').each(function () {
+    var link = $(this);
+    var abbrMatch = link.text().match(/\((.*)\)/);
+    if (abbrMatch) {
+      abbrToLinkMap[abbrMatch[1]] = link.attr('href');
     }
   });
+
+  var script = [];
+  script.push('function validateForm() {');
+
+  script.push('var abbrToLinkMap = {');
+  var pairs = [];
+  for (abbr in abbrToLinkMap)
+    pairs.push(wrapWithQuotes(abbr.toLowerCase()) + ':' +
+        wrapWithQuotes(abbrToLinkMap[abbr]));
+  script.push(pairs.join(',') + '};');
+
+  script.push(['var form = document.search;',
+    'var parts = form.class.value.trim().toLowerCase().split(" ");',
+    'if (parts.length != 2) return false;',
+    'var department = parts[0];',
+    'var number = parts[1];',
+    'var page = abbrToLinkMap[department.toLowerCase()];',
+    'var link = department + number;',
+    'form.action = page + "#" + link;',
+    'return true;',
+    '}'
+  ].join(''));
+
+  addScript(script.join(''));
 
   var defaultText = "Enter a class";
   $('h1').after(
@@ -16,20 +43,11 @@ $(function () {
      '</form>'
     ].join('\n')
   );
-
-  addScript(['function validateForm() {',
-    'var form = document.search;',
-    'var parts = form.class.value.trim().toLowerCase().split(" ");',
-    'if (parts.length != 2) return false;',
-    'var department = parts[0];',
-    'var number = parts[1];',
-    'var page = department + ".html";',
-    'var link = department + number;',
-    'form.action = page + "#" + link;',
-    'return true;',
-    '}'
-  ].join('\n'));
 });
+
+function wrapWithQuotes(str) {
+  return "'" + str + "'";
+}
 
 function addScript(text) {
   var script = document.createElement('script');
