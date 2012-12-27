@@ -12,21 +12,30 @@ function mapAbbrToLinks() {
   });
 }
 
+function parseInput(str) {
+  var input = {};
+  var parts = str.trim().toLowerCase().split(" ");
+  if (parts.length != 2 && parts.length != 3)
+    return null;
+
+  input['department'] = parts[0];
+  input['courseNumber'] = parts[1];
+  return input;
+}
+
 function validateForm() {
   var form = $(this);
   var values = {};
   $.each(form.serializeArray(), function(i, field) {
-        values[field.name] = field.value;
+    values[field.name] = field.value;
   });
 
-  var parts = values['class'].trim().toLowerCase().split(" ");
-  if (parts.length != 2 && parts.length != 3)
+  var input = parseInput(values['class']);
+  if (input === null)
     return false;
 
-  var department = parts[0];
-  var number = parts[1];
-  var page = abbrToLinkMap[department.toLowerCase()];
-  var link = department + number;
+  var page = abbrToLinkMap[input['department'].toLowerCase()];
+  var link = input['department'] + input['courseNumber'];
   form.attr('action', page + "#" + link);
   return true;
 }
