@@ -12,15 +12,48 @@ function mapAbbrToLinks() {
   });
 }
 
+function abbrExists(abbr) {
+  return abbr in abbrToLinkMap;
+}
+
+function isNumber(str) {
+  return str.match(/\d+/) !== null;
+}
+
+function validateInput(inputHalves) {
+  return inputHalves instanceof Array && inputHalves.length == 2 &&
+    abbrExists(inputHalves[0]) && isNumber(inputHalves[1]);
+}
+
+function mergeTokens(tokens) {
+  var numTokens = tokens.length;
+  var result = [];
+
+  var firstHalf = [];
+  for (var i = 0; i < numTokens - 1; i++)
+    firstHalf.push(tokens[i]);
+
+  result.push(firstHalf.join(" "));
+  result.push(tokens[numTokens - 1]);
+
+  return result;
+}
+
 function parseInput(str) {
   var input = {};
-  var parts = str.trim().toLowerCase().split(" ");
-  if (parts.length != 2 && parts.length != 3)
+  var tokens = str.trim().toLowerCase().split(" ");
+  var halves = mergeTokens(tokens);
+  if (!validateInput(halves))
     return null;
 
-  input['department'] = parts[0];
-  input['courseNumber'] = parts[1];
+  input['department'] = halves[0];
+  input['courseNumber'] = halves[1];
+
   return input;
+}
+
+function removeWhitespace(str) {
+  return str.replace(/\s/, '');
 }
 
 function validateForm() {
@@ -36,7 +69,8 @@ function validateForm() {
 
   var page = abbrToLinkMap[input['department'].toLowerCase()];
   var link = input['department'] + input['courseNumber'];
-  form.attr('action', page + "#" + link);
+  form.attr('action', removeWhitespace(page + "#" + link));
+
   return true;
 }
 
