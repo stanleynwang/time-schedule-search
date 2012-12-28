@@ -75,7 +75,8 @@ function validateForm() {
 }
 
 function createSearchBox() {
-  $('h1').after(
+  $('h1').after('<h2 id="classSearchH2">Class Search</h2>');
+  $('#classSearchH2').after(
     ['<form name="search" id="classSearch" method="post">',
      '<input type="text" name="class" id="classInput">',
      '<input type="submit" value="Search">',
