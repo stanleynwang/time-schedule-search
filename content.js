@@ -1,19 +1,19 @@
-var abbrToLinkMap = {};
+var abbrToLinkMap = Object.create(null);
+
+function abbrExists(abbr) {
+  return abbr in abbrToLinkMap;
+}
 
 function mapAbbrToLinks() {
   $('li>a').each(function () {
     var link = $(this);
     var abbrMatch = link.text().match(/\(([^()]*)\)$/);
     if (abbrMatch) {
-      var abbr = abbrMatch[1].trim().toLowerCase();
-      if (abbr.split(" ").length <= 2)
+      var abbr = abbrMatch[1].trim().toLowerCase().replace(/\s/, ' ');
+      if (abbr.split(" ").length <= 2 && !abbrExists(abbr))
         abbrToLinkMap[abbr] = link.attr('href');
     }
   });
-}
-
-function abbrExists(abbr) {
-  return abbr in abbrToLinkMap;
 }
 
 function isNumber(str) {
@@ -41,7 +41,7 @@ function mergeTokens(tokens) {
 
 function parseInput(str) {
   var input = {};
-  var tokens = str.trim().toLowerCase().split(" ");
+  var tokens = str.trim().toLowerCase().split(/\s/);
   var halves = mergeTokens(tokens);
   if (!validateInput(halves))
     return null;
