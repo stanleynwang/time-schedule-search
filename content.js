@@ -91,7 +91,8 @@ function validateForm() {
 function createSearchBox() {
   $('h1').after('<h2 id="classSearchH2">Class Search</h2>');
   $('#classSearchH2').after(
-    ['<form name="search" id="classSearch" method="post">',
+    ['<p></p>',
+     '<form name="search" id="classSearch" method="post">',
      '<input type="text" name="class" id="classInput">',
      '<input type="submit" value="Search">',
      '<span id="classSearchError"></span>',
@@ -99,6 +100,11 @@ function createSearchBox() {
     ].join('\n')
   );
 
+  $('#classSearchH2+p').text(
+    ['Enter a class in the search box below. You will be taken to its listing',
+     'in the time schedule.'
+    ].join(' ')
+  );
   $('#classSearch').submit(validateForm);
   $('#classInput').attr({
     placeholder: "Enter a class",
