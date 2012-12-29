@@ -1,0 +1,7 @@
+#classSearchError {
+    color: red;
+}
+
+.error[type='text'] {
+    border: 1px solid red;
+}

@@ -56,6 +56,15 @@ function removeWhitespace(str) {
   return str.replace(/\s/, '');
 }
 
+function toggleError(state) {
+  state ? $('#classInput').addClass('error') :
+          $('#classInput').removeClass('error');
+}
+
+function displayErrorMessage(str) {
+  $('#classSearchError').text(str);
+}
+
 function validateForm() {
   var form = $(this);
   var values = {};
@@ -64,8 +73,13 @@ function validateForm() {
   });
 
   var input = parseInput(values['class']);
-  if (input === null)
+  if (input === null) {
+    toggleError(true);
+    displayErrorMessage('Class not found.');
     return false;
+  }
+  toggleError(false);
+  displayErrorMessage('');
 
   var page = abbrToLinkMap[input['department'].toLowerCase()];
   var link = input['department'] + input['courseNumber'];
@@ -80,6 +94,7 @@ function createSearchBox() {
     ['<form name="search" id="classSearch" method="post">',
      '<input type="text" name="class" id="classInput">',
      '<input type="submit" value="Search">',
+     '<span id="classSearchError"></span>',
      '</form>'
     ].join('\n')
   );
