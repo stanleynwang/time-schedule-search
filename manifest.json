@@ -1,6 +1,6 @@
 {
   "name": "UW Time Schedule Search",
-  "version": "0.1",
+  "version": "1.0",
   "manifest_version": 2,
   "description": "Adds a class search box to the time schedule",
   "icons": {
