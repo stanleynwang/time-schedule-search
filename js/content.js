@@ -1,4 +1,5 @@
 var abbrToLinkMap = Object.create(null);
+var abbrTags = [];
 
 function abbrExists(abbr) {
   return abbr in abbrToLinkMap;
@@ -10,10 +11,13 @@ function mapAbbrToLinks() {
     var abbrMatch = link.text().match(/\(([^()]*)\)$/);
     if (abbrMatch) {
       var abbr = abbrMatch[1].trim().toLowerCase().replace(/\s/, ' ');
-      if (abbr.split(" ").length <= 2 && !abbrExists(abbr))
+      if (abbr.split(" ").length <= 2 && !abbrExists(abbr)) {
         abbrToLinkMap[abbr] = link.attr('href');
+        abbrTags.push(abbr.toUpperCase());
+      }
     }
   });
+  abbrTags.sort();
 }
 
 function isNumber(str) {
@@ -112,7 +116,17 @@ function createSearchBox() {
   });
 }
 
+function setUpAutocomplete() {
+  $('#classInput')
+    .addClass('ui-autocomplete-input')
+    .attr('autocomplete', 'off')
+    .autocomplete({
+      source: abbrTags
+    });
+}
+
 $(function () {
   mapAbbrToLinks();
   createSearchBox();
+  setUpAutocomplete();
 });
