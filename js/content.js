@@ -1,13 +1,17 @@
 var abbrToLinkMap = Object.create(null);
 var abbrTags = [];
 
+// Return if a class abbreviation exists.
 function abbrExists(abbr) {
   return abbr in abbrToLinkMap;
 }
 
+// Create mappings from abbreviations to page links, from the page HTML. Also
+// create the abbreviation tags used for autocomplete.
 function mapAbbrToLinks() {
   $('li>a').each(function () {
     var link = $(this);
+    // match department_name (abbr)
     var abbrMatch = link.text().match(/\(([^()]*)\)$/);
     if (abbrMatch) {
       var abbr = abbrMatch[1].trim().toLowerCase().replace(/\s/, ' ');
@@ -20,15 +24,20 @@ function mapAbbrToLinks() {
   abbrTags.sort();
 }
 
+// Return if a string contains all numeric digits.
 function isNumber(str) {
   return str.match(/\d+/) !== null;
 }
 
+// Return if the input array is of the form [valid_abbr, number].
 function validateInput(inputHalves) {
   return inputHalves instanceof Array && inputHalves.length == 2 &&
     abbrExists(inputHalves[0]) && isNumber(inputHalves[1]);
 }
 
+// Merge and concatenate all entries except the last of an array. Return a new
+// array with the new entries.
+// Ex. ['a', 'b', 'c', 'd'] -> ['a b c', 'd']
 function mergeTokens(tokens) {
   var numTokens = tokens.length;
   var result = [];
@@ -43,6 +52,8 @@ function mergeTokens(tokens) {
   return result;
 }
 
+// Parse the input string and return an object with department and courseNumber
+// properties filled in.
 function parseInput(str) {
   var input = {};
   var tokens = str.trim().toLowerCase().split(/\s/);
@@ -56,19 +67,23 @@ function parseInput(str) {
   return input;
 }
 
+// Return a copy of the string with the whitespace removed.
 function removeWhitespace(str) {
   return str.replace(/\s/, '');
 }
 
+// Toggle the error state of the search box.
 function toggleError(state) {
   state ? $('#classInput').addClass('error') :
           $('#classInput').removeClass('error');
 }
 
+// Display the string as an error message.
 function displayErrorMessage(str) {
   $('#classSearchError').text(str);
 }
 
+// Validate and modify the form action as appropriate upon submit.
 function validateForm() {
   var form = $(this);
   var values = {};
@@ -92,6 +107,7 @@ function validateForm() {
   return true;
 }
 
+// Create the search box in the HTML.
 function createSearchBox() {
   $('h1').after('<h2 id="classSearchH2">Class Search</h2>');
   $('#classSearchH2').after(
@@ -116,6 +132,7 @@ function createSearchBox() {
   });
 }
 
+// Set up the autocomplete functionality in the HTML.
 function setUpAutocomplete() {
   $('#classInput')
     .addClass('ui-autocomplete-input')
